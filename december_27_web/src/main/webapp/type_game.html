@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>타자 게임 - 베네치아</title>
+		<style type="text/css">
+		#wrapper{
+			width: 700px;
+			height: 500px;
+			border: 3px solid black;
+			text-align: center;
+			margin: 0 auto;
+		}
+		#game_field{
+			position: relative;
+			width: 650px;
+			height: 400px;
+			border: 3px dotted red;
+			margin: 0 auto;
+		}
+		#input_word{
+			font-size: xx-large;
+		}
+		.word{
+			font-size: x-large;
+			background: silver;
+			width: 100px;
+			position: absolute;
+		}
+		#start_btn{
+			position: absolute;
+			font-size: xx-large;
+			top: 150px;
+			left: 250px;
+			margin: 0px auto;
+		}
+		</style>
+		<script type="text/javascript">
+		var move_interval_id = "";
+		var move_delay_ms = 1000	//단어가 아래로 내려갈 간격(ms)
+		var move_px = 30
+		var add_interval_id = "";
+		var add_delay_ms = 1500
+		
+////////////////////////////////////////////////////////
+		function remove_input_word(){
+			var word = document.querySelector("#input_word").value	//입력된 단어	
+			var word_div_arr = document.querySelectorAll(".word")
+			for(var i = 0; i < word_div_arr.length; i++){
+				if(word_div_arr[i].innerHTML == word){
+					word_div_arr[i].remove()
+					break
+				}
+			}
+			document.querySelector("#input_word").value = ""	//입력단어 삭제
+		}
+		
+		function move_word(){
+			var word_div_arr = document.querySelectorAll(".word")
+			for(var i = 0; i < word_div_arr.length; i++){
+				var top = parseInt(word_div_arr[i].style.top)
+				word_div_arr[i].style.top = top + move_px + "px"
+				if(top + move_px > 370){	//범위 벗어남
+					word_div_arr[i].remove()	//값 지움
+				}
+			}
+		}
+		
+		var words = "가나다라 가냘프다 가노라 가누다 가늘다 가다듬다 가닥 가두다 가득하다 가뜬하다 가라사대"
+			words += " 가라앉다 가락 가락지 가랑눈 가랑비 가랑잎 가래 가련하다 가로 가로막다 가로채다 가루 가르다"
+		
+		var word_arr = words.split(" ")//공백 기준으로 단어 분리, 배열로 저장
+		//단어 추가
+		function add_word(){
+			if(word_arr.length == 0){	//추가할 단어 없을시 중지
+				clearInterval(add_interval_id);
+				return
+			}
+			//단어 추가
+			var gmae_field = document.querySelector("#game_field")
+			var word_div = document.createElement("div")
+			word_div.setAttribute("class","word")
+			word_div.innerHTML = word_arr.shift() //배열 맨 앞 요소 삭제
+			word_div.style.top = "0px"
+			var word_left = Math.floor(Math.random()*300)	//임의의 수평위치 정하기
+			word_div.style.left = word_left + "px"
+			game_field.appendChild(word_div)
+		}
+		
+		function start_game(){
+			document.querySelector("#start_btn").style.display="none"	//화면 삭제
+			//단어추가 timer, 단어 이동 tiemr
+			//단어를 아래로 이동 & 추가
+			move_interval_id = setInterval(move_word, move_delay_ms)
+			add_interval_id = setInterval(add_word, add_delay_ms)
+		
+			
+			
+		}
+			window.onload = function(){
+				document.querySelector("#input_word").onkeydown = function(event){
+					if(event.key == "Enter"){
+						remove_input_word()
+					}
+				}
+				
+				document.querySelector("#start_btn").onclick= function(){
+					start_game()
+				}
+				
+			}
+		</script>
+	</head>
+	<body>
+		<h1>타자 게임 - 베네치아</h1>
+		<input id="life">
+		<div id="wrapper">
+			<div id="game_field">
+				<button id="start_btn">게임 시작</button>
+			</div>
+			<input type="text" id="input_word">
+		</div>
+		//점수 및 목숨 추가해보기
+	</body>
+</html>

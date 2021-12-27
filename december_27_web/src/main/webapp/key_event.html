@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>자바스크립트 뱀게임 배열</title>
+	<style type="text/css">
+	#wrapper{
+		border: 3px solid black;
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	}
+	.rect{
+		background: red;
+		width: 50px;
+		height: 50px;
+		position: absolute;
+	}
+	#food{
+		background: green;
+		width: 30px;
+		height: 30px;
+		position: absolute;
+	}
+	</style>
+	<script type="text/javascript">
+	var rect_top = 0 //뱀 머리 좌표
+	var rect_left = 0 //뱀 머리 좌표
+	var snake_arr = [] //그릴 뱀 좌표 배열
+	var snake = {x:0, y:0} //뱀좌표객체
+	snake_arr.push( snake )
+	
+	var rect = ""  //빨간네모
+	var snake_dir = "down" //뱀이동방향
+	var food_left = 0 //먹이 x좌표
+	var food_top = 0 //먹이 y좌표
+	
+	function snake_down(){ //꼬리삭제, 머리추가
+		snake_arr[0].y +=10 //머리좌표를 아래로 이동
+	}
+	function snake_up(){
+		snake_arr[0].y -=10 //머리좌표를 위로 이동
+	}
+	function snake_right(){
+		snake_arr[0].x +=10 //머리좌표를 우로 이동
+	}
+	function snake_left(){
+		snake_arr[0].x -=10 //머리좌표를 좌로 이동
+	}
+	function stop_game(){
+		clearInterval( timerid )
+		timerid = ""
+	}
+	function init_food(){
+		food_left = Math.floor(Math.random()*470) //floor소수이하버림
+		food_top = Math.floor(Math.random()*470) //floor소수이하버림
+		
+		var food = document.querySelector("#food")
+		food.style.top = food_top+"px"
+		food.style.left = food_left+"px"
+	}
+	
+	function move_food(){
+		var snake = {x:snake_arr[0].x, y:snake_arr[0].y}
+		snake_arr.push( snake )
+		
+		var wrapper = document.querySelector("#wrapper")
+		wrapper.innerHTML += "<div class='rect'></div>"	//뱀 길이 늘리기
+		food_left = Math.floor(Math.random()*470) //floor소수이하버림
+		food_top = Math.floor(Math.random()*470) //floor소수이하버림
+			
+		var food = document.querySelector("#food")
+		food.style.top = food_top+"px"
+		food.style.left = food_left+"px"
+	}
+	
+	
+	//0.3초마다 dir방향대로 이동하는 코드.  setTimeout()/setInterval()
+	function move_snake(){
+		var sn = snake_arr.pop() //지워진 꼬리 반환
+		snake_arr.unshift( sn ) //꼬리정보를 맨앞에 추가
+		if(snake_dir == "down")
+			snake_down()
+		else if(snake_dir == "up")
+			snake_up()
+		else if(snake_dir == "left")
+			snake_left()
+		else if(snake_dir == "right")
+			snake_right()
+		//벽충돌검사
+		if( snake_arr[0].y <0 || snake_arr[0].y > 450 ||
+				snake_arr[0].x < 0 || snake_arr[0].x > 450 ){
+			//벽충돌
+			stop_game()
+		}
+		
+		//뱀 그리기
+		// .rect 를 검색,  snake_arr값을 차례대로 부여
+		var rect_arr = document.querySelectorAll(".rect")
+		for(var i=0; i<rect_arr.length; i++){
+			rect_arr[i].style.top = snake_arr[i].y+"px"
+			rect_arr[i].style.left = snake_arr[i].x+"px"
+		}
+		
+		//먹이충돌검사
+		var rect_top = snake_arr[0].y
+		var rect_left = snake_arr[0].x
+		var food_bottom = food_top+30
+		var food_right = food_left+30
+		var rect_right = rect_left+50
+		var rect_bottom = rect_top+50
+		
+		if( (food_top >= rect_top) && (food_top <= rect_bottom ) &&
+				(food_left >= rect_left) && (food_left <= rect_right)){
+			//먹이 좌상단 충돌
+			move_food()
+		}
+		if( (food_top <= rect_bottom) && (food_top >= rect_top) &&
+				(food_right >= rect_left) && (food_right <= rect_right)){
+			//먹이 좌상단 충돌
+			move_food()
+		}
+		if( (food_bottom <= rect_bottom) && (food_bottom >= rect_top) &&
+				(food_right >= rect_left) && (food_right <= rect_right)){
+			//먹이 우하단 충돌
+			move_food()
+		}
+		if( (food_bottom <= rect_bottom) && (food_bottom >= rect_top) &&
+				(food_left >= rect_left) && (food_left <= rect_right)){
+			//먹이 좌하단 충돌
+			move_food()
+		}
+	}
+	var timerid = "" //타이머 id. 타이머 중지때 사용
+	function start_game(){
+		if(timerid == "")
+			timerid = setInterval(move_snake, 100)
+	}
+	window.onload = function(){
+		//먹이 좌표의 설정( 0~470 )
+		init_food()		
+		rect = document.querySelector(".rect")
+		rect.style.top = "0px"
+		rect.style.left = "0px"
+		document.onkeydown = function(event){
+// 			console.log(event)
+			if(event.key == " "){ //게임 시작
+				start_game()
+			}
+			if(event.key == "ArrowDown"){ //빨간네모가 아래방향으로 이동
+				snake_dir = "down"
+			}
+			if(event.key == "ArrowUp"){ //빨간네모가 윗방향으로 이동
+				snake_dir = "up"
+			}
+			if(event.key == "ArrowRight"){ //빨간네모가 우측으로 이동
+				snake_dir = "right"
+			}
+			if(event.key == "ArrowLeft"){ //빨간네모가 좌측으로 이동
+				snake_dir = "left"
+			}
+			return false // 이벤트 기본동작 중지
+		}
+		
+		
+	}//end onload
+	</script>
+</head>
+<body>
+	<h1>게임 시작하려면 "스페이스바"를 누르세요</h1>
+	<div id="wrapper">
+		<div class="rect"></div>
+		<div id="food"></div>
+	
+	</div>
+</body>
+</html>

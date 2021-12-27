@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>key event</title>
+		<style type="text/css">
+		#wrapper{
+			border: 3px solid black;
+			width: 500px;
+			height: 500px;
+			position: absolute;
+		}
+		#rect{
+			border: 3px dotted red;
+			width: 50px;
+			height: 50px;
+			position: absolute;
+		}
+		</style>
+		<script type="text/javascript">
+		var rect_top = 0
+		var rect_left = 0
+			window.onload = function(){
+				var rect = document.querySelector("#rect")
+				rect.style.top = "0px"
+				rect.style.left = "0px"
+				document.onkeydown = function(event){
+					if(event.key == "ArrowDown"){
+						rect_top += 10
+						rect.style.top = rect_top + "px" 
+					}
+					if(event.key == "ArrowUp"){
+						rect_top -= 10
+						rect.style.top = rect_top + "px" 
+					}
+					if(event.key == "ArrowRight"){
+						rect_left += 10
+						rect.style.left = rect_left + "px" 
+					}
+					if(event.key == "ArrowLeft"){
+						rect_left -= 10
+						rect.style.left = rect_left + "px"
+					}
+					return false	//이벤트 기본동작 비활성화(화면 스크롤)
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="rect"></div>
+		
+		</div>
+	</body>
+</html>
