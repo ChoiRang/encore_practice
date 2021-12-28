@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JavaSctipt 1</title>
+		<script type="text/javascript">
+			function increase(){
+				count++
+				console.log(count)
+			}
+			var count = 0
+			/////////////////
+						
+			
+		</script>
+	</head>
+	<body>
+		<button onclick="count++; console.log(count)">OK 1</button>
+		<button onclick="increase()">OK 2</button>
+		<button id="ok3">OK 3</button>
+		<script type="text/javascript">
+			var o2 = document.getElementById("ok3")
+			console.log("o2 = ", o2)
+			o2.onclick = increase
+		</script>
+	</body>
+</html>

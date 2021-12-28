@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>숫자 맞추기 서블릿 버전</title>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+		<script type="text/javascript">
+			function check_number(){
+				//start Ajax
+				var options = {
+						url: "number_guess",
+						data: {"user_num": $("#user_num").val()},
+						success: function(data){						//보낸 숫자에 대한 판정 결과를 받아옴
+							var n = $("#user_num").val()						//n 에 숫자 저장
+							$("#msg").html(n + " : " + data + "<br>" + $("#msg").html())		//succee => call Back 함수라 부름
+							$("#user_num").val("")						//입력숫자 삭제
+							//정답일때 메세지 이력 삭제하기
+							if(data.indexOf("정답") >= 0){
+								alert("정답입니다. 새로운 게임을 다시 시작합니다.")
+								$("#msg").html("")
+							}
+						}
+				} 
+				$.ajax(options)							//서버로 숫자 보내기
+				return false;	//페이지 넘어가기 막기->기본동작 막음
+			}
+			
+			$(function(){
+				$("#number_form").submit(check_number)
+			})
+		</script>
+	</head>
+	<body>
+		<form action="number_guess" method="post" id="number_form">
+			<fieldset>
+				<h1>숫자 맞추기 서블릿 버전</h1>
+					<label>
+						1~100사이 숫자를 입력 하세요.<br>
+						<input type="number" id="user_num" name="user_num" min="1" max="100"><br>
+						<input type="submit" value="숫자 확인">
+					</label>
+			</fieldset>
+			<fieldset>
+				<legend>결과값 출력</legend>
+				<div id="msg"></div>			
+			</fieldset>
+		</form>
+	</body>
+</html>

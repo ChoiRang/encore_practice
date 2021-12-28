@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>calculator</title>
+		<style type="text/css">
+		#calculator_main {
+			border: thin;
+			width: 300px;
+			margin: 0px auto; 
+		}
+		#title {
+			text-align: center;
+			margin-top: 3px;
+			margin-bottom: 5px;
+		}
+		#id_in {
+			position: relative;
+		}
+		#result{
+			width: 132px;
+			margin-left: 50px;
+		}
+		#press_calc{
+			width: 140px;
+			margin-left: 50px;
+		}
+		#buttons {
+			margin-left: 50px;
+		}
+		#buttons > button {
+			width: 33px;
+			height: 20px;
+			margin : 1px;
+		}
+		</style>
+		
+				
+		<script type="text/javascript">
+			var tmpNum = ""
+			var tmpOpr = ""
+			var firstNum = false
+		
+			function check_button(){
+				var result = document.getElementById("input_data")
+				var num = result.innerHTML	
+
+				if(num == "c"){
+					result.value = ""
+					return
+				}
+				
+				if(num == "+" || num == "-" || num == "*" || num == "/"){
+					tmpNum = result.value
+					tmpOpr = num
+					firstNum = true;
+					return
+				}
+				
+				if(firstNum){
+					result.value = num
+					firstNum = false
+				} else {
+					result.value += num
+				}
+			}
+			
+			function calc(){
+				var result = document.getElementById("result")
+				var n = eval(tmpNum + tmpOpr + result.value)
+				result.value = n
+			}
+			
+			window.onload = function(){
+				var eq = document.getElementById("press_calc")
+				eq.onclick = calc
+				
+//				var arr = ['1', '2', '3', '+', '4', '5', '6', '-', '7', '8', '9', '*', '0', '00', 'c', '/'];
+				var arr = [1, 2, 3, '+', 4, 5, 6, '-', 7, 8, 9, '*', 0, 00, 'c', '/'];
+				var count = 1;
+				for(i = 0; i < 16; i++ ){
+					if(count % 4 == 0){
+						buttons.innerHTML += "<button>" + arr[i] + "</button><br>"
+					} else{
+						buttons.innerHTML += "<button>" + arr[i] + "</button>"
+					}
+					count++;
+				}
+				
+				var btns = document.querySelectorAll("#buttons > button")
+				for(i = 0; i < btns.legth; i++){
+					btns[i].onclick = check_button
+				}
+				
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div id="calculator_main">
+			<fieldset>
+				<h3 id="title">간이 계산기</h3>
+				<label id="id_in">
+					<input id="result"><br>
+					<button id="press_calc">=</button>
+				</label>
+				<div id="buttons">
+				</div>
+			</fieldset>
+		</div>
+	</body>
+</html>

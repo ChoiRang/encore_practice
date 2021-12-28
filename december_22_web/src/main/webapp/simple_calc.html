@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>간이 계산기</title>
+	<style type="text/css">
+		#wrapper{
+			width: 300px;
+			height: 300px;
+			border: 3px solid;
+			text-align: center;
+		}
+		#result, #eq{
+			width: 210px;
+		}
+		#buttons > button {
+			width: 40px;
+			height: 30px;
+			margin: 5px;
+		}
+	</style>
+	<script type="text/javascript" src="./js/jquery-3.6.0.js"></script>
+	<script type="text/javascript">
+		/* window.onload = function(){
+			document.querySelector("h1").style.color="blue"
+		} */
+		$(
+			function(){
+				$("#eq").click(function(){
+					$("#buttons").slideToggle()
+				})
+				$("h1").css("color", "red")
+				$("#buttons > button").click(function(){	//this -> 눌린 버튼 객체
+					//documment.queruSelector("#result").value = this.innerHTML
+					//$("#result").val(this.innerHTML)
+					if($(this).text() == "c"){
+						$("#result").val("")	
+						return
+					}
+					$("#result").val( $("#result").val() + $(this).text() )
+				})
+			}		
+		)
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<h1>간이 계산기</h1>
+		<input id="result"> <br>
+		<button id="eq"> = </button>
+		<div id="buttons">
+			<button>1</button>
+			<button>2</button>
+			<button>3</button>
+			<button>+</button> <br>
+			<button>4</button>
+			<button>5</button>
+			<button>6</button>
+			<button>-</button> <br>
+			<button>7</button>
+			<button>8</button>
+			<button>9</button>
+			<button>*</button> <br>
+			<button>0</button>
+			<button>00</button>
+			<button>C</button>
+			<button>/</button> <br>
+		</div>
+	</div>
+	
+</body>
+</html>

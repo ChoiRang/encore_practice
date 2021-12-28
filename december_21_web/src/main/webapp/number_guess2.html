@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>숫자맞추기 게임 2</title>
+	<style type="text/css">
+		#wrapper{
+			width: 600px;
+			margin: 0px auto;
+		}
+	</style>
+	<script type="text/javascript">
+		//난수 생성
+		var com_num = Math.floor(Math.random()*100 + 1 );
+		console.log("com_num = "+com_num)
+		 //입력숫자추출
+		function check_num(){
+			var num = document.getElementById("num");
+			var msg = document.getElementById("mesage");	//output
+			if(com_num > num.value){
+				msg.innerHTML = num.value + "높여주세요<br>"	+ msg.innerHTML
+			}else if(com_num < num.value){
+				msg.innerHTML = num.value + "낮춰주세요<br>" + msg.innerHTML
+			}else{
+				msg.innerHTML = num.value + "정답입니다<br>" + msg.innerHTML
+		 	}
+			num.value = ""	//delete input integer
+		}
+	</script>
+	<script type="text/javascript">
+		window.onload = function(){	//wait until webpage loading
+			var cnum1 = document.getElementById("check_num")
+			cnum1.onclick =  check_num;
+		}
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+	<h1>숫자맞추기 게임 2</h1>
+	<p>컴퓨터가 정한 1~100사이 임의의 숫자를 맞춰 보세요</p>
+	
+	<fieldset>
+		<legend>숫자 맞추기 게임</legend>
+		
+		<label>
+			<input type="text" id="num">
+			<button id="check_num">숫자 확인</button>
+			<br>이전 입력 숫자<br>
+			<p id="mesage"></p>
+			
+		</label>
+	</fieldset>
+	</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>기상청 일기 예보</title>
+		<script type="text/javascript" src="./js/jquery-3.6.0.js"></script>
+		<script type="text/javascript" src="./js/jquery.ajax-cross-origin.min.js"></script>
+		<script type="text/javascript">
+		function click_weather(){
+			var url = "./jsp/proxy_kma.jsp";
+			var options = {
+						url: url,
+						success: function(data){
+							var w_data = $(data).find("data")
+							console.log("데이터 갯수는 " + w_data.length)
+							w_data.each(function(index, el){
+								var h = $(el).find("hour").text()	//시간
+								var d = $(el).find("day").text()	//날짜
+								var t = $(el).find("temp").text()	//온도
+								console.log(h + "시까지, " + d + ", " + t + "도")
+							})
+						}
+					}
+			$.ajax(options)
+		}
+		
+		$(function(){
+			$("#weather").click(click_weather)
+		})
+		</script>
+	</head>
+	<body>
+		
+		<button id="weather">일기 예보 가져오기</button>
+		<div id="msg"></div>
+		
+	</body>
+</html>

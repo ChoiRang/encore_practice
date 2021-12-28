@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>calculator</title>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+		<style type="text/css">
+		label > button  {
+			width: 68px;
+			height: 36px;
+		}
+		label > input {
+			width: 60px;
+			height: 30px;
+			text-align: center;
+		}
+		#result {
+			background-color: fuchsia;
+		}
+		
+		</style>
+		<script type="text/javascript">
+			function calcNum(){
+				var res = {
+						url: "calc",
+						data: {"left": $("#left_value").val(),
+									 "right": $("#right_value").val(),
+									 "operator": $("#operator").val()
+						},
+						success: function(data){
+							$("#result").val(data)
+						}
+				}				
+			$.ajax(res)
+			return false;
+			}
+			 
+			$(function(){
+				$("#calc_form").submit(calcNum)
+			})
+			
+		</script>
+		
+	</head>
+	<body>
+		<form action="calc" method="post" id="calc_form">
+			<fieldset>
+				<h1>초간단 계산기</h1>
+				<label>
+					<input type="text" id="left_value" name="value">
+					<input type="text" id="operator" name="value">
+					<input type="text" id="right_value" name="value">
+					<button type="submit" id="equal" value="=">=</button>
+					<input type="text" id="result" name="result">
+				</label>
+			</fieldset>
+		</form>
+	</body>
+</html>

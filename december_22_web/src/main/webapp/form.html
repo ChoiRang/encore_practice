@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>글 등록</title>
+		<script type="text/javascript" src="./js/jquery-3.6.0.js"></script>
+		<script type="text/javascript">
+			function myinit(){
+				$("form").submit(function(){
+					$("form input").css("border", "2px inset rgb(118, 118, 118)")
+					if($("#title").val() == ""){
+						$("#title").css("border", "3px solid red")
+						alert("제목은 필수입니다.")
+						return false	//false는 전송 불가
+					}
+					if($("#writer").val() == ""){
+						$("#writer").css("border", "3px solid red")
+						alert("작성자는 필수입니다")
+						return false
+					} 
+					if($("#content").val() == ""){
+						$("#content").css("border", "3px solid red")
+						alert("내용은 필수입니다.")
+						return false
+					}
+				})
+			}
+			$(myinit)
+		</script>
+	</head>
+	<body>
+		<h1>글 등록</h1>
+		<form action="jsp/insert.jsp">
+			<label>
+				글 제목 : <input type="text" id="title" name="title">
+				<!-- id 가 자바스크립트 에서의 컨트롤 -->
+			</label><br>
+			<label>
+				작성자 : <input type="text" id="writer" name="writer">
+			</label><br>
+			<label>
+				글내용 : <br><textarea rows="3" cols="50" id="content" name="content"></textarea>
+			</label><br>
+			<input type="submit" value="전송">
+		</form>
+	</body>
+</html>

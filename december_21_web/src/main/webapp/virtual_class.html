@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<style type="text/css">
+			a {text-decoration: none;}
+			a:hover { 
+				text-decoration: underline;
+				font-size: xx-large;
+				background: yellow;
+			}
+			li:hover {
+				background: yellow;
+			}
+			label > span {
+				display: none;
+			}
+			label > input:focus + span {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<a href="http://www.naver.com">naver</a> <br>
+		<ul>
+			<li>item one</li>
+			<li>item two</li>
+		</ul>
+		<form action="">
+			<label>
+				회원 아이디
+				<input type="text">
+				<span>회원 아이디는 영문자와 숫자만 가능합니다.</span>
+			</label>
+			<br>
+			<label>
+				회원 암호
+				<input type="password">
+				<span>회원 암호는 8~20 자리입니다.</span>
+			</label>
+		</form>
+		
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>숫자맞추기 게임 2</title>
+	<style type="text/css">
+		#wrapper{
+			width: 600px;
+			margin: 0px auto;
+		}
+		#buttons > button {
+			width: 56px;
+			height: 30px;
+		}
+	</style>
+	<script type="text/javascript">
+		//난수 생성
+		var com_num = Math.floor(Math.random()*100 + 1 );
+		console.log("com_num = "+com_num)
+		 //입력숫자추출
+		function check_button(btn_num){
+			var msg = document.getElementById("mesage");	//output
+			
+			if(com_num > btn_num){
+				msg.innerHTML = btn_num + "높여주세요<br>"	+ msg.innerHTML
+			}else if(com_num < btn_num){
+				msg.innerHTML = btn_num + "낮춰주세요<br>" + msg.innerHTML
+			}else{
+				msg.innerHTML = btn_num + "정답입니다<br>" + msg.innerHTML
+		 	}
+		}
+	</script>
+	<script type="text/javascript">
+		window.onload = function(){
+			var buttons = document.getElementById("buttons")
+			for(i = 1; i < 101; i++){
+				buttons.innerHTML += "<button onclick='check_button("+i+")'>"+i+"</button>"
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+	<h1>숫자맞추기 게임 2</h1>
+	<p>컴퓨터가 정한 1~100사이 임의의 숫자를 맞춰 보세요</p>
+	
+	<fieldset>
+		<legend>숫자 맞추기 게임</legend>
+		<div id="buttons">
+		</div>
+	</fieldset>
+			<p id="mesage"></p>
+	</div>
+</body>
+</html>

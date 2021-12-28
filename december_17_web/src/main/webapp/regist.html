@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>회원 등록</title>
+	</head>
+	<body>
+		<h1>회원 등록</h1>
+			<form action="jsp/form1.jsp" method="get">
+		<fieldset>
+		<legend>계정 정보 입력</legend>
+			<label for="user-id">사용할 아이디 : 
+				<input type="text" name="memid" placeholder="영어로 입력하세요." required="required"><br>
+			</label>
+			<label for="id_pw">
+				사용할 암호 :
+			</label>
+			<input type="password" name="mempw" id="id_pw" required="required"><br>
+			<input type="submit" value="등록">
+		</fieldset>
+		<fieldset>
+			<legend>경력</legend>
+				<label>최종 학력
+					<input type="search" name="keyword">
+				</label><br>
+				<label>홈페이지
+					<input type="url" name="page" value="http://" readonly="readonly">			
+				</label> <br>
+				<label>태어난 해
+					<input type="number" name="birthYear">
+				</label><br>
+				<label>성별
+					<input type="radio" name="gender" value="male">남자
+					<input type="radio" name="gender" value="female">여자
+				</label><br>
+				<label>가입된 OTT 선택하세요<br>
+					<input type="checkbox" name="ott" value="netflix">넷플릭스
+					<input type="checkbox" name="ott" value="watcha">왓차
+					<input type="checkbox" name="ott" value="coupangPLay">쿠팡 플레이
+					<input type="checkbox" name="ott" value="tving">티빙
+				</label><br>
+				<label>색깔 선택하기
+					<input type="color" name="color">
+				</label><br>
+				<label>생일은?
+					<input type="date" name="birthdate">				
+				</label><br>
+				<label>태어난 달은?
+					<input type="month" name="birthmenth">				
+				</label><br>
+				<label>몇번재 주에 태어났는가? ->
+					<input type="week" name="birthweek">				
+				</label><br>
+				<label>태어난 지역은?
+					<select name="birth_area">
+						<option>서울</option>
+						<option>강원도</option>
+						<option>충청도</option>
+						<option selected>경기도</option>
+						<option>경상도</option>
+						<option>전라도</option>
+						<option>제주도</option>
+					</select>
+				</label><br>
+				<label>자기소개
+					<textarea name="intro" rows="3" cols="50"></textarea>
+				</label><br>
+				
+				
+				<input type="submit" value="등록">
+				<input type="reset" value="처음으로 되돌리기">
+		</fieldset>			
+		</form>
+	</body>
+</html>

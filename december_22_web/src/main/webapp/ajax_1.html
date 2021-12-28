@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ajax 1</title>
+		<style type="text/css">
+		div {
+			border: 1px solid red
+		}
+		</style>
+		<script type="text/javascript" src="./js/jquery-3.6.0.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			$("#get_txt").click(function(){
+				$("#msg").load("./poem.txt")
+			})
+			$("#get_html").click(function(){
+				$.get("./data_1.html", function(data){
+					 $("#msg").html( $(data).find("li"))
+					 $(data).find("li").each(function(index, el){
+						 $("#msg").html($("#msg").html() + ", " +el.innerHTML)
+					 })
+				})
+			})
+		})
+		</script>
+	</head>
+	<body>
+	
+		<button id="get_txt">poem 가져오기</button>
+		<button id="get_html">html 가져오기</button>
+		<div id="msg"></div>
+		
+	</body>
+</html>

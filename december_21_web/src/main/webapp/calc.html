@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>calc</title>
+		<style type="text/css">
+		#calculator_main {
+			border: thin;
+			width: 300px;
+			margin: 0px auto; 
+		}
+		#title {
+			text-align: center;
+			margin-top: 3px;
+			margin-bottom: 5px;
+		}
+		#id_in {
+			position: relative;
+		}
+		#input_data{
+			width: 150px;
+			margin-left: 50px;
+		}
+		#press_calc{
+			width: 158px;
+			margin-left: 50px;
+		}
+		#buttons {
+			margin-left: 50px;
+		}
+		#buttons > button {
+			width: 33px;
+			height: 20px;
+			margin : 1px;
+		}
+		</style>
+		<script type="text/javascript">
+			function click_num(){	//계산시 버튼 클릭시 호출
+				var result = document.getElementById("input_data")
+				var num = this.innerHTML
+
+				if(num == "c"){
+					result.value = ""	//출력 삭제
+					return
+				}
+				result.value += num				
+			}
+		
+			function calc(){
+				var result = document.getElementById("input_data")
+				result.value = eval(result.value)
+			}
+		
+			//1. 이벤트 등록 - 페이지 로딩 직후 자동 실행 window.onload
+			//웹 페이지 완전 로딩 후 자동실행
+			window.onload = function(){
+				var eq = document.getElementById("press_calc")
+				eq.onclick = calc
+				var buttons = document.querySelectorAll("#buttons > button")
+				console.log(buttons)
+				
+				for(i = 0; i < buttons.length; i++){
+					buttons[i].onclick = click_num
+				}
+			}
+			
+				
+		</script>
+	</head>
+	<body>
+		<div id="calculator_main">
+			<fieldset>
+				<h3 id="title">간이 계산기</h3>
+					<input id="input_data"><br>
+					<button id="press_calc">=</button>
+				<div id="buttons">
+					<button>1</button>
+					<button>2</button>
+					<button>3</button>
+					<button>+</button><br>
+					<button>4</button>
+					<button>5</button>
+					<button>6</button>
+					<button>-</button><br>
+					<button>7</button>
+					<button>8</button>
+					<button>9</button>
+					<button>*</button><br>
+					<button>0</button>
+					<button>00</button>
+					<button>c</button>
+					<button>/</button><br>
+				</div>
+			
+			</fieldset>
+		</div>
+	</body>
+</html>
