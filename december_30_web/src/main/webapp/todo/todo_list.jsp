@@ -1,9 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-ArrayList<String> todoList = (ArrayList<String>)application.getAttribute("todolist");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,17 +12,15 @@ ArrayList<String> todoList = (ArrayList<String>)application.getAttribute("todoli
 	<h1>할일 목록</h1>
 	<a href="todo.jsp?command=insert_form">할 일 등 록</a>
 	<br>
-	<h2>저장갯수: <%= todoList.size() %> </h2>
+	<h2>저장갯수: ${todolist.size()} </h2>
 	<h3>할일목록</h3>
 	<ul>
-	<%
-	for(int i=0; i<todoList.size(); i++) {
-	%>
-		<li><%= todoList.get(i) %>
-		<a href="todo.jsp?command=update_form&no=<%= i %>">수정</a> /
-		<a href="todo.jsp?command=delete_action&no=<%= i %> ">삭제</a>
-		</li>
-	<% } %>
+		<c:forEach items="${todolist}" var="todo" varStatus="v">
+			<li> ${ todo }
+				<a href="todo.jsp?command=update_form&no=#{ v.index }">수정</a> /
+				<a href="todo.jsp?command=delete_action&no=#{ v.index }">삭제</a>
+			</li>
+		</c:forEach>	
 	</ul>
 	
 	
