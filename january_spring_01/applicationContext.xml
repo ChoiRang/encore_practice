@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<!-- 클래스를 등록하는 파일  -->
+	<bean id="hello" class="january_spring_01.Hello"></bean>
+	<bean id="calc" class="january_spring_01.Calc"></bean>
+	<bean id="mysum" class="january_spring_01.MySum">
+		<!-- <property name="backup" ref="myback"></property> -->
+	</bean>
+	<bean id="myback" class="january_spring_01.MyBackup"></bean>
+</beans>
