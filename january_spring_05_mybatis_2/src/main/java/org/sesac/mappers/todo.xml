@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sesac.mappers.todo">
+  <select id="selectAll" resultType="org.sesac.todo.vo.TodoVo">
+    select * from TODO order by no DESC
+  </select>
+  <insert id="insert">
+  	insert into TODO (title, todo, regdate, enddate)
+  	values(#{title}, #{todo}, #{regdate}, #{enddate})
+  </insert>
+  <insert id="selectOne">
+  	select * from todo where no = "#{no}"
+  </insert>
+</mapper>
