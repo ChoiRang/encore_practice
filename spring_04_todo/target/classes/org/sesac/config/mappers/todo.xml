@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sesac.config.mappers.todo">
+  
+  <insert id="insert">
+  insert into todo
+  (title, todo, regdate, enddate)
+  values
+  ( #{title}, #{todo}, #{regdate}, #{enddate}  )
+  </insert>
+ 
+  <select id="selectAll" resultType="org.sesac.todo_04.vo.TodoVo">
+  select * FROM todo
+  ORDER BY NO desc
+  limit #{startNo}, #{size}
+  </select>
+
+  <select id="select" resultType="org.sesac.todo_04.vo.TodoVo">
+  select * FROM TODO
+  WHERE no = #{no}
+  </select>
+  
+   <update id="update">
+  update todo
+  set
+  title=#{title}, todo=#{todo}, regdate=#{regdate}, enddate=#{enddate}
+  where no = #{no}
+  </update>
+  
+  <select id="count" resultType="int">
+  	select count(*) from todo
+  </select>
+  
+</mapper>
