@@ -23,8 +23,12 @@ public class TodoController {
 	// 할일 목록
 	@RequestMapping("/todo/list")
 	public String todo_list(
-			@RequestParam( value="pno",required = false,defaultValue = "1" ) int pno,
+			@RequestParam( value="pno",required = false,defaultValue = "0" ) int pno,
 			Model model) {
+		
+		if(pno == 0) {	//pno 없이 접근사 막기
+			return "redirect:/todo/list?pno=1";
+		}
 		int rowPerPage = 3 ; //페이지당 보여줄 게시물 수
 		int pagePerGrp = 4 ; //하단 보여줄 페이지번호 갯수 
 		
@@ -73,7 +77,13 @@ public class TodoController {
 	}
 	//상세
 	@RequestMapping("/todo/detail")
-	public String todo_detail( @RequestParam("no") int no, Model model) {
+	public String todo_detail(
+			@RequestParam("no") int no,
+			@RequestParam(value = "target", required = false) String target,
+			@RequestParam(value = "word", required = false) String word,
+			
+			Model model
+			) {
 		
 		String ns = "org.sesac.config.mappers.todo";
 		TodoVo vo = session.selectOne(ns+".select", no);
@@ -84,7 +94,10 @@ public class TodoController {
 	}
 	//수정하기
 	@RequestMapping("/todo/update_form")
-	public String todo_update_form( @RequestParam("no") int no, Model model) {
+	public String todo_update_form(
+			@RequestParam("no") int no,
+			Model model
+			) {
 		
 		String ns = "org.sesac.config.mappers.todo";
 		TodoVo vo = session.selectOne(ns+".select", no);
@@ -95,20 +108,67 @@ public class TodoController {
 	}
 	//수정작업
 	@RequestMapping("/todo/update_action")
-	public String todo_update_action(TodoVo vo) {
+	public String todo_update_action(
+			TodoVo vo,
+			@RequestParam("pno") int pno
+			) {
 		
 		String ns = "org.sesac.config.mappers.todo";
 		session.update(ns+".update", vo);
 		
-		return "redirect:/todo/list";
+		return "redirect:/todo/list?pno=" + pno;
 	}
 	//삭제작업
 	@RequestMapping("/todo/delete_action")
-	public String todo_delete_action(@RequestParam("no") int no) {
+	public String todo_delete_action(
+			@RequestParam("no") int no,
+			@RequestParam("pno") int pno
+			) {
 		
 		String ns = "org.sesac.config.mappers.todo";
 		session.delete(ns+".delete", no);
 		
-		return "redirect:/todo/list";
+		return "redirect:/todo/list?pno=" + pno;
+	}
+	
+	//search
+	@RequestMapping("/todo/search")
+	public String todo_search(
+			@RequestParam("target") String target,
+			@RequestParam("word") String word,
+			@RequestParam( value="pno",required = false,defaultValue = "1" ) int pno,
+			Model model) {
+		
+		int rowPerPage = 3 ; //페이지당 보여줄 게시물 수
+		int pagePerGrp = 4 ; //하단 보여줄 페이지번호 갯수 
+		
+		HashMap<String,Object> map = new HashMap<String, Object>();
+		int startNo = (pno-1) * rowPerPage ;
+		map.put("startNo", startNo);
+		map.put("size", rowPerPage );
+		map.put("target", target );
+		map.put("word", "%" + word + "%");
+		
+		String ns = "org.sesac.config.mappers.todo";
+		List<TodoVo> list = session.selectList(ns+".search", map);
+		model.addAttribute("todo_list", list);
+		
+		PageNavigator pnavi = new PageNavigator();//하단 페이지번호 목록 생성
+		pnavi.setRowPerPage(rowPerPage);//페이지당 보여줄 게시물 수
+		pnavi.setPagePerGrp(pagePerGrp);//하단 보여줄 페이지번호 갯수 
+		pnavi.setCurrentPageNo(pno);
+		
+		// 총게시물 수 추출
+		int todo_count = session.selectOne(ns+".search_count", map);
+		model.addAttribute("todo_count", todo_count);
+		
+		pnavi.setTotalRow(todo_count);
+		
+		ArrayList<Integer> pageNavi = pnavi.getPageNavi();
+		
+		model.addAttribute("pageNavi", pageNavi);
+		model.addAttribute("pageNavigator", pnavi);
+		
+		return "todo/search_list"; //뷰이름  =>  /WEB-INF/views/ (뷰이름) .jsp
 	}
 }

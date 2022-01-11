@@ -33,4 +33,21 @@
   	select count(*) from todo
   </select>
   
+  <update id="delete">
+	  delete from todo
+	  where no = #{no}
+  </update>
+  
+  <select id="search" resultType="org.sesac.todo_04.vo.TodoVo">
+  select * FROM todo
+  where 
+  ${target} like #{word}
+  ORDER BY NO desc
+  limit #{startNo}, #{size}
+  </select>
+  
+  <select id="search_count" resultType="int">
+  	select count(*) from todo
+  	where ${target} like #{word}
+  </select>
 </mapper>

@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>할 일 목 록</title>
+	<title>할 일 검 색</title>
 	<style type="text/css">
 		a {
 		text-decoration: none;
@@ -18,11 +18,11 @@
 	</style>
 </head>
 <body>
-	<h1>할 일 목 록</h1>
+	<h1>검 색 결 과</h1>
 	
 	<a href="insert_form">글 등 록</a>
 	<hr>
-	저장갯수: ${todo_count}
+	검색결과: ${todo_count}
 	<h2>목록</h2>
 	<table border="1">
 	  <tr>
@@ -32,22 +32,22 @@
 	  <c:forEach items="${todo_list}" var="todo">
 	  <tr>
 	    <td>${todo.no}</td>
-	    <td><a href="detail?no=${todo.no}&pno=${param.pno}">${todo.title}</a></td>
+	    <td><a href="detail?no=${todo.no}&pno=${param.pno == null ? 1 : param.pno}">${todo.title}</a></td>
 	  </tr>
 	  </c:forEach>
 	</table>
 	
 	<div id="page_nav_bar">
 		<c:if test="${pageNavi[0] != 1}">
-			<a href="list?pno=${pageNavi[0]-1}">previous</a>
+			<a href="search?pno=${pageNo}&target=${param.target}&word=${param.word}">previous</a>
 		</c:if>
 		<c:forEach items="${pageNavi}" var="pageNo">
 			<c:if test="${param.pno == pageNo }">[</c:if>
-			<a href="list?pno=${pageNo}">${pageNo}</a> 
+			<a href="search?pno=${pageNo}&target=${param.target}&word=${param.word}">${pageNo}</a> 
 			<c:if test="${param.pno == pageNo }">]</c:if>
 		</c:forEach>
 		<c:if test="${pageNavi[pageNavi.size()-1] != 1}">
-			<a href="list?pno=${pageNavi[pafeNavi.size()-1]+1}">next</a>
+			<a href="search?pno=${pageNo}&target=${param.target}&word=${param.word}">next</a>
 		</c:if>
 	</div>
 	<hr>
@@ -55,16 +55,15 @@
 		<form action="search">
 			<label>검색대상
 				<select name="target">
-					<option value="title">제목</option>
-					<option value="todo">내용</option>
+					<option value="title" >제목</option>
+					<option value="todo" ${param.target == ' todo' ? "selected" : "" }">내용</option>
 				</select>
 			</label>
 			<label>
-				검색어 <input name="word">
+				검색어 <input name="word" value="${param.word }">
 			</label>
 			<input type="submit"  value="search">
 		</form>
 	</div>
-	<img alt="" src="<c:url value='/' />/resources/images/iu_1.jpg">
 </body>
 </html>

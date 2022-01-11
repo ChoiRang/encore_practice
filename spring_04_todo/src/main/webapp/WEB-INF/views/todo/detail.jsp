@@ -14,9 +14,9 @@
 	할일 등록일: ${vo.regdate} <br>
 	할일 마감일: ${vo.enddate} <br>
 	
-	<a href="list">목록</a>
-	<a href="update_form?no=${vo.no}">수정</a>
-	<a href="delete_action?no=${vo.no}">삭제</a>
+	<a href="${param.target == null? 'list' : 'search_list' }?pno=${param.pno }">목록</a>
+	<a href="update_form?no=${vo.no}&pno=${param.pno}">수정</a>
+	<a href="delete_action?no=${vo.no}&pno=${param.pno}">삭제</a>
 
 </body>
 </html>

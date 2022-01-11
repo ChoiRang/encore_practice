@@ -15,7 +15,7 @@
 	<h1>할 일 수 정</h1>
 
 	<div>
-		<a href="list">할일 목록</a>
+		<a href="list?pno=${param.pno }">할일 목록</a>
 	</div>
 	<hr>
 	<form action="update_action" method="post">
@@ -23,6 +23,7 @@
 			할 일 제 목:
 			<input type="text" name="title" value="${vo.title}">
 			<input type="hidden" name="no" value="${vo.no}">
+			<input type="hidden" name="pno" value="${param.pno}">
 		</label> <br>
 		<label>
 			할 일 내 용:
