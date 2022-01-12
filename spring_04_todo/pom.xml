@@ -144,6 +144,14 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- file upload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>

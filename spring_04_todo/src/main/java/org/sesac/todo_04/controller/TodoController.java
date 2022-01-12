@@ -1,17 +1,24 @@
 package org.sesac.todo_04.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.SqlSession;
+import org.sesac.todo_04.exception.TodoNotFoundException;
 import org.sesac.todo_04.util.PageNavigator;
 import org.sesac.todo_04.vo.TodoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -81,12 +88,19 @@ public class TodoController {
 			@RequestParam("no") int no,
 			@RequestParam(value = "target", required = false) String target,
 			@RequestParam(value = "word", required = false) String word,
-			
 			Model model
-			) {
+			) throws TodoNotFoundException {
 		
 		String ns = "org.sesac.config.mappers.todo";
 		TodoVo vo = session.selectOne(ns+".select", no);
+		
+//		if(vo == null) {
+//			model.addAttribute("error_msg", "없거나 삭제된 할일 번호입니다 : " + no);
+//			return "todo/error";
+//		}
+		if(vo == null) {
+			throw new TodoNotFoundException("없거나 삭제된 할일 번호입니다 :" + no);
+		}
 		
 		model.addAttribute("vo", vo);
 		
@@ -170,5 +184,33 @@ public class TodoController {
 		model.addAttribute("pageNavigator", pnavi);
 		
 		return "todo/search_list"; //뷰이름  =>  /WEB-INF/views/ (뷰이름) .jsp
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public String todoNotFoundException(Exception e, HttpServletRequest req) {
+		req.setAttribute("exception", e.getMessage());
+		return "todo/error"; 
+	}
+	
+	String UPLOAD_PATH="/Users/cyh/Documents/encore_practice/spring_04_todo/src/main/webapp/resources/upload";
+	@RequestMapping("todo/upload_form")
+	public String todo_upload_form() {
+		
+		return "todo/upload_form";
+	}
+	
+	@RequestMapping("todo/upload_action")
+	public String todo_upload_aciton(
+			@RequestParam("uploadFile") MultipartFile file,
+			Model model) throws IllegalStateException, IOException {
+		String filename = file.getOriginalFilename();
+		
+		if(!filename.isEmpty()) {
+			file.transferTo(new File(UPLOAD_PATH, filename));
+			model.addAttribute("msg", "파일 업로드 완료.");
+			model.addAttribute("filename", filename);
+		}
+		
+		return "todo/upload_action";
 	}
 }
