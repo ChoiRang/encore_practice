@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.config.mappers.user">
+
+	<insert id="insert_user">
+		insert into member
+		(id, password, nickname, intro, tel, email)
+		values 
+		(#{id}, #{password}, #{nickname}, #{intro, jdbcType=VARCHAR}, #{tel, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="find_one" resultType="com.team5.prj.users.UserVo"><!-- 수정 필 -->
+		select * from member
+		where id = #{id}
+	</select>
+	<select id="find_id" resultType="String">
+		select id from member
+	</select>
+</mapper>
