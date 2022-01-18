@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.team5.prj.users.UserDao;
 import com.team5.prj.users.UserVo;
 
 @Controller
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	UserDao userDao = new UserDao();
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -40,7 +42,13 @@ public class UserController {
 			Model model
 			) {
 		List<String> idList = session.selectList(nameSpace + ".find_id");
+		boolean emptyCheck = userDao.emptyCheck(vo.getId());
 		
+		if(emptyCheck == true || vo.getId().equals("")) {
+			model.addAttribute("confirm",0);
+			model.addAttribute("check", "공백을 쓸수 없습니다.");
+			return "users/sign_form";
+		}
 		
 		for(String id : idList) {
 			if(vo.getId().equals(id)) {
@@ -113,6 +121,7 @@ public class UserController {
 		logger.debug("match{}",a);
 		if(user != null) {
 			if(passwordEncoder.matches(password, user.getPassword())) {
+				passwordEncoder.encode(password);
 				model.addAttribute("id", id);
 				return "login_test";	//수정 필
 			}			

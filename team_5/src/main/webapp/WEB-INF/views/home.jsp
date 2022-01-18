@@ -10,7 +10,13 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 		</script>
+		<style type="text/css">
+		.wrong{
+			color:red;
+		}
+		</style>
 	</head>
+	
 	<body>
 		<div class="container">
 			<h1>투두 리스트</h1>
@@ -23,7 +29,7 @@
 				<input type="submit" value="유저 등록하기">
 			</form>
 			<c:if test="${login_fail == true }">
-				wrong user name and id
+				<span class="wrong">유저명과 비밀번호가 틀립니다.</span>
 			</c:if>
 		</div>		
 	</body>
