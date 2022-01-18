@@ -38,8 +38,8 @@
 						formaction="/users/sign_user"
 					>
 						유저 등록하기
-					</button>						
-				<input type="submit" value="돌아가기" formaction="/" >		
+					</button>
+				<button type="submit" formaction="/">돌아가기</button>					
 			</form>
 		</div>		
 		<script type="text/javascript">

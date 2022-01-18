@@ -3,17 +3,26 @@ package com.team5.prj.controller;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.team5.prj.users.UserVo;
 
 @Controller
 public class UserController {
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private SqlSession session;
 	
@@ -57,10 +66,12 @@ public class UserController {
 			@RequestParam("id") String id,
 			@RequestParam("check_id") String check_id,
 			@RequestParam("password") String password,
-			@RequestParam("nickname") String nickname,			
+			@RequestParam("nickname") String nickname,	
 			UserVo userVo, Model model) {
 		
 		model.addAttribute("user_vo", userVo);
+		
+		
 		if(id.equals("")) {
 			model.addAttribute("msg", "아이디 필수 입력");
 			model.addAttribute("confirm", 2);
@@ -73,32 +84,41 @@ public class UserController {
 			model.addAttribute("msg", "닉네임 필수 입력");
 			model.addAttribute("confirm", 4);
 			return "users/sign_form";
-		} else {
-			session.insert(nameSpace+".insert_user", userVo);			
-		}
+		} 
 		
 		//아이디 중복 검사 변경 감지
-		if(id != check_id) {
+		if(!id.equals(check_id)) {
 			model.addAttribute("confirm", 0);
-			model.addAttribute("check", "아이디 중복검사를 다시 해 주세요.");			
+			model.addAttribute("check", "아이디 중복검사를 다시해 주세요.");			
 			return "users/sign_form";
 		}
-		
-		return "home";
+		logger.debug("password{}",userVo.getPassword());
+		userVo.setPassword(passwordEncoder.encode(userVo.getPassword()));
+		logger.debug("password{}",userVo.getPassword());
+		session.insert(nameSpace+".insert_user", userVo);	
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/users/login_action")
 	public String loginAction(
 			@RequestParam("user_id") String id,
 			@RequestParam("user_password") String password,
+			RedirectAttributes redirect,
 			Model model
 			) {
 		UserVo user = session.selectOne(nameSpace + ".find_one", id);
-		if(user.getPassword().equals(password)) {
-			model.addAttribute("id", id);
-			return "login_test";	//수정 필
+		String b = user.getPassword();
+		logger.debug("uservo get password{}", b);
+		boolean a = passwordEncoder.matches(user.getPassword(), password);
+		logger.debug("match{}",a);
+		if(user != null) {
+			if(passwordEncoder.matches(password, user.getPassword())) {
+				model.addAttribute("id", id);
+				return "login_test";	//수정 필
+			}			
 		}
 		
-		return "users/login_fail";
+		redirect.addAttribute("login_fail", true);
+		return "redirect:/fail";
 	}
 }
