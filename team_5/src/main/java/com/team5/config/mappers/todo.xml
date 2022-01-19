@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.config.mappers.todo">
+	
+	<insert id="insert">
+	insert into todo
+	(member_id, content, regdate, enddate, importance)
+	values
+	(#{member_id}, #{content}, #{regdate}, #{enddate}, #{importance})
+	</insert>
+	
+	<select id="selectAll" parameterType="string" resultType="com.team5.prj.todo.TodoVo">
+	select * FROM TODO
+ 	where member_id = #{member_id} and ck = '0'
+	ORDER BY enddate asc
+	</select>
+	
+	<select id="select" resultType="com.team5.prj.todo.TodoVo">
+	select * from todo
+	where no = #{no}
+	</select>
+	
+	<select id="count" resultType="int">
+	select count(*) from todo
+	</select>
+	
+	<select id="end" parameterType="hashmap" resultType="com.team5.prj.todo.TodoVo">
+	select * FROM TODO
+	WHERE ck = '1'
+	ORDER BY NO desc
+	LIMIT ${startNo}, ${size}
+	</select>
+	
+	<update id="update" parameterType="com.team5.prj.todo.TodoVo">
+	update todo set content = #{content}, regdate = #{regdate}, enddate = #{enddate}, ck = #{ck}
+	where no = #{no} 
+	</update>
+	
+	<delete id="delete">
+	delete from todo
+	where no = #{no}
+	</delete>
+	
+
+</mapper>

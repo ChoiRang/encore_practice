@@ -2,12 +2,16 @@ package com.team5.prj.controller;
 
 import java.util.List;
 
+import javax.jws.HandlerChain;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -112,22 +116,28 @@ public class UserController {
 			@RequestParam("user_id") String id,
 			@RequestParam("user_password") String password,
 			RedirectAttributes redirect,
-			Model model
+			HttpSession httpSession
 			) {
 		UserVo user = session.selectOne(nameSpace + ".find_one", id);
-		String b = user.getPassword();
-		logger.debug("uservo get password{}", b);
-		boolean a = passwordEncoder.matches(user.getPassword(), password);
-		logger.debug("match{}",a);
+		
 		if(user != null) {
 			if(passwordEncoder.matches(password, user.getPassword())) {
-				passwordEncoder.encode(password);
-				model.addAttribute("id", id);
-				return "login_test";	//수정 필
+				httpSession.setAttribute("member_id", id);
+				httpSession.setAttribute("nickname", user.getNickname());
+				
+				//return "login_test";
+				return "redirect:/todo/main";
 			}			
 		}
 		
 		redirect.addAttribute("login_fail", true);
 		return "redirect:/fail";
 	}
+	
+	@RequestMapping("/users/logout_action")
+	public String userLogout(HttpSession httpSession) {
+		httpSession.invalidate();
+		return "redirect:/";
+	}
+	
 }
